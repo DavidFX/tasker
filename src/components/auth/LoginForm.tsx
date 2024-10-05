@@ -25,49 +25,35 @@ import {
 } from "@/components/ui/form";
 import Link from "next/link";
 
-const registerSchema = z
-  .object({
-    fullName: z.string().min(2).max(20),
-    email: z.string().email(),
-    password: z.string().min(8),
-    confirmPassword: z.string().min(8),
-  })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Passwords do not match",
-        path: ["confirmPassword"],
-      });
-    }
-  });
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const { toast } = useToast();
 
   const registerForm = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      fullName: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
   function onSubmit(data: z.infer<typeof registerSchema>) {
     toast({
       title: "Success",
-      description: `${data.fullName}, you're successfully registered`,
+      description: `Welcome back, you're successfully logged in`,
     });
   }
 
   return (
     <Card className=" w-[480px] max-w-full">
       <CardHeader>
-        <CardTitle>Register</CardTitle>
+        <CardTitle>Login</CardTitle>
         <CardDescription>
-          Create an account to start using Tasker
+          Login to your account to start using Tasker
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -76,19 +62,6 @@ const RegisterForm = () => {
             onSubmit={registerForm.handleSubmit(onSubmit)}
             className="space-y-2"
           >
-            <FormField
-              control={registerForm.control}
-              name="fullName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Full Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="John Doe" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={registerForm.control}
               name="email"
@@ -114,26 +87,14 @@ const RegisterForm = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={registerForm.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl></FormControl>
-                  <FormMessage />
-                  <Input type="password" placeholder="••••••••" {...field} />
-                </FormItem>
-              )}
-            />
             <Button type="submit" className="w-full mt-5">
-              Register
+              Log In
             </Button>
           </form>
           <div className="w-full text-center mt-5 text-sm">
-            Already have account?{" "}
-            <Link href="/login" className=" text-primary">
-              Log In
+            Don't have account?{" "}
+            <Link href="/register" className=" text-primary">
+              Register
             </Link>
           </div>
         </Form>
@@ -142,4 +103,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
