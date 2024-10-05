@@ -10,7 +10,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -58,7 +57,7 @@ const RegisterForm = () => {
   function onSubmit(data: z.infer<typeof registerSchema>) {
     toast({
       title: "Success",
-      description: `${data.fullName}, you're successfully registered`,
+      description: `${data.fullName}, you&apos;re successfully registered`,
     });
   }
 

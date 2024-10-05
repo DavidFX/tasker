@@ -10,7 +10,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -44,7 +43,7 @@ const LoginForm = () => {
   function onSubmit(data: z.infer<typeof registerSchema>) {
     toast({
       title: "Success",
-      description: `Welcome back, you're successfully logged in`,
+      description: `Welcome back ${data.email} , you&apos;re successfully logged in!`,
     });
   }
 
@@ -87,12 +86,18 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
+            <Link
+              href="/forgot-password"
+              className="text-primary w-full block text-right"
+            >
+              Forgot Password?
+            </Link>
             <Button type="submit" className="w-full mt-5">
               Log In
             </Button>
           </form>
           <div className="w-full text-center mt-5 text-sm">
-            Don't have account?{" "}
+            Don&apos;t have account?{" "}
             <Link href="/register" className=" text-primary">
               Register
             </Link>
