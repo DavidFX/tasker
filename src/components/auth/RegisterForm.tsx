@@ -1,9 +1,11 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { set, z } from "zod";
 import { useToast } from "@/hooks/use-toast";
+import { registerUser } from "@server/appwrite";
+
+import { useRouter } from "next/navigation";
 
 import { Button } from "../ui/button";
 import {
@@ -43,6 +45,7 @@ const registerSchema = z
 
 const RegisterForm = () => {
   const { toast } = useToast();
+  const router = useRouter();
 
   const registerForm = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -54,11 +57,24 @@ const RegisterForm = () => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof registerSchema>) {
+  async function onSubmit(data: z.infer<typeof registerSchema>) {
+    try {
+      await registerUser(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Please check your inputs",
+      });
+    }
+
     toast({
       title: "Success",
-      description: `${data.fullName}, you&apos;re successfully registered`,
+      description: `${data.fullName}, you're successfully registered`,
     });
+
+    setTimeout(() => {
+      router.push("/");
+    }, 500);
   }
 
   return (

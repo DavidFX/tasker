@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form";
 import Link from "next/link";
 
-const registerSchema = z.object({
+const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
 });
@@ -32,15 +32,15 @@ const registerSchema = z.object({
 const LoginForm = () => {
   const { toast } = useToast();
 
-  const registerForm = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(registerSchema),
+  const registerForm = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof registerSchema>) {
+  function onSubmit(data: z.infer<typeof loginSchema>) {
     toast({
       title: "Success",
       description: `Welcome back ${data.email} , you&apos;re successfully logged in!`,
